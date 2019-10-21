@@ -29,7 +29,7 @@ public class ExceptionController {
     /**
      * 测试抛出自定义错误类型
      */
-    @RequestMapping("/throwRuntimeException")
+    @PostMapping("/throwRuntimeException")
     public Object throwRuntimeException(@RequestParam(value = "message",required = true) String exceptionMessage){
         LOGGER.info("exceptionController throwRuntimeException " + exceptionMessage);
         throw new RuntimeException(exceptionMessage);
@@ -38,7 +38,7 @@ public class ExceptionController {
     /**
      * 测试用于抛出系统错误如400之类的
      */
-    @RequestMapping("/throwBadRequest")
+    @PostMapping("/throwBadRequest")
     public Object throwBadRequest(@RequestParam(name = "userInfo",required = true) UserDTO userDTO){
         LOGGER.info("exceptionController throwBadRequest info : " + JSON.toJSONString(userDTO));
         return userDTO;
