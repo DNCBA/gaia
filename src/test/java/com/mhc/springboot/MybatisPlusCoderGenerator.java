@@ -1,6 +1,6 @@
 package com.mhc.springboot;
 
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
+
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -47,26 +47,27 @@ public class MybatisPlusCoderGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
+        final String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setAuthor("jobob");
+        gc.setAuthor("mhc");
         gc.setOpen(false);
-        // gc.setSwagger2(true); 实体属性 Swagger2 注解
+//        gc.setSwagger2(true);
+        gc.setFileOverride(true);
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/ant?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/mhc_gaia?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true");
         // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("密码");
+        dsc.setPassword("1234567");
         mpg.setDataSource(dsc);
 
         // 包配置
-        PackageConfig pc = new PackageConfig();
+        final PackageConfig pc = new PackageConfig();
         pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.baomidou.ant");
+        pc.setParent("com.mhc.springboot");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -120,15 +121,16 @@ public class MybatisPlusCoderGenerator {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
+//        strategy.setTablePrefix(new String[]{"t_"});
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
+        strategy.setSuperEntityClass("com.mhc.springboot.dao.base.BaseEntity");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // 公共父类
-        strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
+//        strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("id");
+        strategy.setSuperEntityColumns("id", "create_time", "update_time", "creator_id", "updater_id","deleted");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");

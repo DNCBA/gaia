@@ -16,33 +16,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @SpringBootApplication
 @MapperScan("com.mhc.springboot.dao")
-public class Application implements ErrorPageRegistrar, WebMvcConfigurer {
+public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
-    }
-
-    /**
-     * 处理常见错误页面的相关信息
-     */
-    @Override
-    public void registerErrorPages(ErrorPageRegistry registry) {
-        //404页面处理
-        registry.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/errorPage/404/aaa"));
-        //500页面处理
-        registry.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/errorPage/500/bbb"));
-    }
-
-
-    /**
-     * 跨域设置
-     */
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*")
-                .allowCredentials(true)
-                .maxAge(3600);
     }
 }
