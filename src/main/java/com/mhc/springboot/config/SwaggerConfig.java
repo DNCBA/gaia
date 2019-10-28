@@ -21,8 +21,8 @@ public class SwaggerConfig {
 
     @Value("${applicatioName:gaia}")
     private String applicationName;
-    @Value("${applicationURL:localhost:8080}")
-    private String applicationURL;
+    @Value("${applicationurl:localhost:8080}")
+    private String applicationurl;
 
     @Bean
     public Docket api() {
@@ -38,7 +38,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title(String.format("%s 项目接口文档",applicationName))
                 .description("基于 swagger2 实现的接口文档")
-                .termsOfServiceUrl(applicationURL)
+                .termsOfServiceUrl(applicationurl)
                 .version("1.0")
                 .build();
     }

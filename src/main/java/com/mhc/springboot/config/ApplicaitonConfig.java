@@ -21,11 +21,11 @@ import javax.sql.DataSource;
 public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer{
 
     @Value("${application.db.url:jdbc:mysql://127.0.0.1:3306/mhc_gaia?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}")
-    private String DATA_SOURCE_URL;
+    private String dataSourceUrl;
     @Value("${application.db.username:root}")
-    private String DB_USERNAME;
+    private String dbUsername;
     @Value("${application.db.password:1234567}")
-    private String DB_PASSWORD;
+    private String dbPassword;
 
     /**
      * 数据库连接配置
@@ -34,9 +34,9 @@ public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer{
     public DataSource getDataSource(){
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url(DATA_SOURCE_URL)
-                .username(DB_USERNAME)
-                .password(DB_PASSWORD)
+                .url(dataSourceUrl)
+                .username(dbUsername)
+                .password(dbPassword)
                 .build();
     }
 

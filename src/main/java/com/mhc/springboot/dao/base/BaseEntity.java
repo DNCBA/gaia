@@ -26,18 +26,6 @@ public class BaseEntity {
     @TableField(value = "updater_id", fill = FieldFill.INSERT_UPDATE)
     private Long updaterId;
 
-    @TableField(value = "deleted")
-    @TableLogic
-    private Integer deleted = 0;
-
-    public Integer getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
-
     public Long getId() {
         return id;
     }

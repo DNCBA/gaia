@@ -1,4 +1,4 @@
-package com.mhc.springboot.dao;
+package com.mhc.springboot.dao.pojo;
 
 /**
  * @author ：menghui.cao, menghui.cao@leyantech.com

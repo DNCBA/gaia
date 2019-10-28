@@ -1,4 +1,4 @@
-package com.mhc.springboot;
+package com.mhc.springboot.coderGenerator;
 
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
@@ -125,12 +125,13 @@ public class MybatisPlusCoderGenerator {
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setSuperEntityClass("com.mhc.springboot.dao.base.BaseEntity");
-        strategy.setEntityLombokModel(true);
+        strategy.setEntityLombokModel(false);
         strategy.setRestControllerStyle(true);
         // 公共父类
 //        strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("id", "create_time", "update_time", "creator_id", "updater_id","deleted");
+        strategy.setSuperEntityColumns("id", "create_time", "update_time", "creator_id", "updater_id");
+        strategy.setLogicDeleteFieldName("deleted");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");

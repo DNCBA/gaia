@@ -2,8 +2,8 @@ package com.mhc.springboot.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.mhc.springboot.dao.UserDTO;
 import com.mhc.springboot.dao.entity.UserInfo;
+import com.mhc.springboot.dao.pojo.UserDTO;
 import com.mhc.springboot.dao.service.IUserInfoService;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
