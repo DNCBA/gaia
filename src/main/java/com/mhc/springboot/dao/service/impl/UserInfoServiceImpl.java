@@ -29,6 +29,18 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     }
 
     public List<UserInfo> listByInfo(Page<Object> page) {
-        return  getBaseMapper().listByInfo(page);
+        return getBaseMapper().listByInfo(page);
+    }
+
+    public UserInfo findByUserName(String userName) {
+        return getOne(new QueryWrapper<UserInfo>().lambda()
+                .eq(UserInfo::getUsername, userName)
+        );
+    }
+
+    public UserInfo findById(Long userId) {
+        return getOne(new QueryWrapper<UserInfo>().lambda()
+                .eq(UserInfo::getId, userId)
+        );
     }
 }

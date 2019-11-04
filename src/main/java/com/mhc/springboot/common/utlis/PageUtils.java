@@ -1,4 +1,4 @@
-package com.mhc.springboot.common;
+package com.mhc.springboot.common.utlis;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mhc.springboot.dao.entity.PageInfo;
@@ -37,6 +37,7 @@ public class PageUtils {
 
     /**
      * 构造返回数据的 PageInfo 信息
+     *
      * @param list 数据list
      * @param page page对象
      * @return

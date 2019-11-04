@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * @date ：2019-10-21 16:21
  */
 @Configuration
-public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer{
+public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer {
 
     @Value("${application.db.url:jdbc:mysql://127.0.0.1:3306/mhc_gaia?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}")
     private String dataSourceUrl;
@@ -31,7 +31,7 @@ public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer{
      * 数据库连接配置
      */
     @Bean
-    public DataSource getDataSource(){
+    public DataSource getDataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
                 .url(dataSourceUrl)

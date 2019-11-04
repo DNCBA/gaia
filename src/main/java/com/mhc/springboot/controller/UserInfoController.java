@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -31,6 +32,8 @@ public class UserInfoController {
     @Autowired
     @Qualifier(value = "userInfoServiceImpl")
     private IUserInfoService userInfoService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/save")
     public Object saveUserInfo(@Param("userInfo") UserDTO userInfo){
@@ -42,6 +45,13 @@ public class UserInfoController {
         userEntity.setEmail("aaa");
         userInfoService.save(userEntity);
         return "success";
+    }
+
+
+    @PostMapping("/login")
+    public Object loginUser(@Param("userInfo")UserDTO userInfo){
+
+        return null;
     }
 
 
