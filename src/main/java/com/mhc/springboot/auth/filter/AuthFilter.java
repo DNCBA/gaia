@@ -2,7 +2,10 @@ package com.mhc.springboot.auth.filter;
 
 
 import com.mhc.springboot.auth.service.UserDetailServiceImpl;
+import com.mhc.springboot.common.utlis.JWTUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：menghui.cao, menghui.cao@leyantech.com
@@ -24,6 +28,8 @@ import java.util.List;
  */
 @Component
 public class AuthFilter extends OncePerRequestFilter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthFilter.class);
 
     @Value("${accessWhiteList:/user/login,/user/switchUser}")
     private List<String> accessWhiteList;
@@ -62,10 +68,11 @@ public class AuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         } else if (header.startsWith(TOKEN_PREFIX)) {
-            String token = header.replaceAll(MOCK_NAME, "");
+            String token = header.replaceAll(TOKEN_PREFIX, "");
             //可以加入单点登录功能,使用userId作为key，token作为value
             //解析token数据,从token中获取数据
-            UserDetails userDetails = userDetailsService.loadUserById(8L);
+            Long userId = pressUserId(token);
+            UserDetails userDetails = userDetailsService.loadUserById(userId);
             buildUPToken(userDetails);
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
@@ -78,12 +85,24 @@ public class AuthFilter extends OncePerRequestFilter {
 
     }
 
+    private Long pressUserId(String token) {
+        Long userId = 0L;
+        try {
+            Map<String, Object> decode = JWTUtils.decode(token);
+            userId = Long.valueOf(decode.get("userId").toString());
+        }catch (Exception e){
+            LOGGER.error("解析token失败！",e);
+        }
+        return userId;
+    }
+
     /**
      * 根据userDetail构造认证对象
      */
     private void buildUPToken(UserDetails userDetails) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-        usernamePasswordAuthenticationToken.setDetails(userDetails);
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        if (null != userDetails) {
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, null);
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        }
     }
 }

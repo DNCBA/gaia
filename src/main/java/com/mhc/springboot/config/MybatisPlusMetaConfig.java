@@ -26,6 +26,8 @@ public class MybatisPlusMetaConfig implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName(CREATE_TIME, LocalDateTime.now(), metaObject);
         this.setFieldValByName(CREATOR_ID, UserUtils.getUserId(), metaObject);
+        this.setFieldValByName(UPDATE_TIME, LocalDateTime.now(), metaObject);
+        this.setFieldValByName(UPDATER_ID, UserUtils.getUserId(), metaObject);
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date ：2019-10-15 16:33
  */
 @SpringBootApplication
-@MapperScan("com.mhc.springboot.dao")
+@MapperScan("com.mhc.springboot.dao.mapper")
 public class Application {
 
     public static void main(String[] args) {

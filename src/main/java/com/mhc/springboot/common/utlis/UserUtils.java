@@ -1,14 +1,20 @@
 package com.mhc.springboot.common.utlis;
 
+import com.alibaba.fastjson.JSON;
 import com.mhc.springboot.auth.pojo.UserDetailImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author ：menghui.cao, menghui.cao@leyantech.com
  * @date ：2019-11-04 17:08
  */
 public class UserUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserUtils.class);
 
     private UserUtils() {
     }
@@ -20,8 +26,10 @@ public class UserUtils {
     public static UserDetailImpl getUserInfo() {
         UserDetailImpl result = new UserDetailImpl();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (null != authentication) {
-            result = (UserDetailImpl) authentication.getDetails();
+        if (null != authentication && authentication.getPrincipal() instanceof UserDetailImpl) {
+            result = (UserDetailImpl) authentication.getPrincipal();
+        }else {
+            LOGGER.error("获取用户信息失败!"+ JSON.toJSONString(authentication.getPrincipal()));
         }
         return result;
     }
