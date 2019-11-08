@@ -1,10 +1,14 @@
 package com.mhc.springboot.config;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.server.ErrorPageRegistry;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -12,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ：menghui.cao, menghui.cao@leyantech.com
@@ -63,6 +68,21 @@ public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowCredentials(true)
                 .maxAge(3600);
+    }
+
+
+    /**
+     * caffeine缓存
+     */
+    @Bean("caffeine")
+    public CacheManager getCacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+        cacheManager.setAllowNullValues(true);
+        cacheManager.setCaffeine(Caffeine.newBuilder()
+                .initialCapacity(64)
+                .maximumSize(1024)
+                .expireAfterWrite(30L, TimeUnit.SECONDS));
+        return cacheManager;
     }
 
 }

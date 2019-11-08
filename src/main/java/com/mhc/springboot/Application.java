@@ -3,6 +3,7 @@ package com.mhc.springboot;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * @author ：menghui.cao, menghui.cao@leyantech.com
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan("com.mhc.springboot.dao.mapper")
+@EnableCaching
 public class Application {
 
     public static void main(String[] args) {
