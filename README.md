@@ -10,5 +10,6 @@
 |spring-security |b7701bbc |
 |JWT | 97292b3f |
 |swagger | c24f99f5|
+| caffeine | 32c89e6d  | 
 
 
