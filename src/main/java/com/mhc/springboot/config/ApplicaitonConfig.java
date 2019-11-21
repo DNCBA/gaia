@@ -1,7 +1,8 @@
 package com.mhc.springboot.config;
 
-import com.github.benmanes.caffeine.cache.Cache;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.server.ErrorPage;
@@ -11,6 +12,15 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -31,6 +41,11 @@ public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer {
     private String dbUsername;
     @Value("${application.db.password:1234567}")
     private String dbPassword;
+
+    @Value("${application.redis.host:127.0.0.1}")
+    private String redisHost;
+//    @Value("${application.redis.password}")
+    private String redisPassword = null;
 
     /**
      * 数据库连接配置
@@ -83,6 +98,33 @@ public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer {
                 .maximumSize(1024)
                 .expireAfterWrite(30L, TimeUnit.SECONDS));
         return cacheManager;
+    }
+
+
+    @Bean
+    public RedisConnectionFactory getRedisConnectionFactory() {
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName(redisHost);
+        configuration.setPort(6379);
+        if (StringUtils.isNotBlank(redisPassword)) {
+            configuration.setPassword(redisPassword);
+        }
+        LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(configuration);
+        return connectionFactory;
+    }
+
+
+    /**
+     * redisTemplate
+     */
+    @Bean("redisTemplate")
+    public RedisTemplate getRedisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(getRedisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
     }
 
 }

@@ -17,6 +17,6 @@
 | logger | / |
 | monitor | / |
 | config | / |
-| 
+| rpc | / | 
 
 
