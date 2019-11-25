@@ -11,7 +11,8 @@
 | JWT | 97292b3f |
 | swagger | c24f99f5|
 | caffeine | 32c89e6d  | 
-| redis | / |
+| redis | 7ed5b702 |
+| distributedLock |/|
 | kafka | / |
 | elasticsearch | / |
 | logger | / |

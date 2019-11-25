@@ -92,6 +92,33 @@ public class RedisService {
 
 
     /**
+     * 当不存在的时候添加
+     */
+
+    public Boolean setIfAbsent(String key, Object value) {
+        Boolean result = false;
+        try {
+            return redisTemplate.opsForValue().setIfAbsent(key, value);
+        } catch (Exception e) {
+            LOGGER.error("RedisService setIfAbsent error", e);
+            result = false;
+        }
+        return result;
+    }
+
+    public Boolean setIfAbsent(String key, Object value, long timeout, TimeUnit unit) {
+        Boolean result = false;
+        try {
+            return redisTemplate.opsForValue().setIfAbsent(key, value, timeout, unit);
+        } catch (Exception e) {
+            LOGGER.error("RedisService setIfAbsent error", e);
+            result = false;
+        }
+        return result;
+    }
+
+
+    /**
      * incr
      */
     public Long incr(String key) {
