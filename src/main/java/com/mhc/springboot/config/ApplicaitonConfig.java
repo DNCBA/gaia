@@ -42,11 +42,6 @@ public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer {
     @Value("${application.db.password:1234567}")
     private String dbPassword;
 
-    @Value("${application.redis.host:127.0.0.1}")
-    private String redisHost;
-//    @Value("${application.redis.password}")
-    private String redisPassword = null;
-
     /**
      * 数据库连接配置
      */
@@ -98,33 +93,6 @@ public class ApplicaitonConfig implements ErrorPageRegistrar, WebMvcConfigurer {
                 .maximumSize(1024)
                 .expireAfterWrite(30L, TimeUnit.SECONDS));
         return cacheManager;
-    }
-
-
-    @Bean
-    public RedisConnectionFactory getRedisConnectionFactory() {
-        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName(redisHost);
-        configuration.setPort(6379);
-        if (StringUtils.isNotBlank(redisPassword)) {
-            configuration.setPassword(redisPassword);
-        }
-        LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(configuration);
-        return connectionFactory;
-    }
-
-
-    /**
-     * redisTemplate
-     */
-    @Bean("redisTemplate")
-    public RedisTemplate getRedisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(getRedisConnectionFactory());
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
     }
 
 }
