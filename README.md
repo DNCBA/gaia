@@ -12,8 +12,8 @@
 | swagger | c24f99f5|
 | caffeine | 32c89e6d  | 
 | redis | 7ed5b702 |
-| distributedLock |/|
-| kafka | / |
+| distributedLock |b2bc7768|
+| kafka | 730c6387 |
 | elasticsearch | / |
 | logger | / |
 | monitor | / |
